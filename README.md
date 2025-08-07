@@ -4,7 +4,7 @@ A fully responsive, interactive food guide website for the city of Lucknow, feat
 
 ---
 
-![Lucknow Eats Screenshot](https://placehold.co/800x400/f59e0b/FFFFFF?text=Add+A+Screenshot+Here)
+![Lucknow Eats Screenshot](C:\Users\ujjya\OneDrive\Documents\Pictures\Screenshots)
 *(Tip: Take a screenshot of your live website and upload it to the repository, then change the link above!)*
 
 ## 🌟 About The Project
