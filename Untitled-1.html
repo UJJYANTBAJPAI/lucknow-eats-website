@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucknow Eats - A Culinary Journey with AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://placehold.co/1200x800/333333/FFFFFF?text=Lucknowi+Cuisine');
+            background-size: cover;
+            background-position: center;
+        }
+        #loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #b45309;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Style for the active filter button */
+        .filter-btn.active {
+            background-color: #92400e; /* A darker amber */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="font-playfair text-2xl font-bold text-amber-800">Lucknow Eats</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#restaurants" class="text-gray-600 hover:text-amber-700 transition duration-300">Restaurants</a>
+                <a href="#ai-recipe" class="text-gray-600 hover:text-amber-700 transition duration-300">✨ AI Recipe Generator</a>
+                <a href="#gallery" class="text-gray-600 hover:text-amber-700 transition duration-300">Gallery</a>
+                <a href="#about" class="text-gray-600 hover:text-amber-700 transition duration-300">About</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4">
+            <a href="#restaurants" class="block py-2 text-gray-600 hover:text-amber-700">Restaurants</a>
+            <a href="#ai-recipe" class="block py-2 text-gray-600 hover:text-amber-700">✨ AI Recipe Generator</a>
+            <a href="#gallery" class="block py-2 text-gray-600 hover:text-amber-700">Gallery</a>
+            <a href="#about" class="block py-2 text-gray-600 hover:text-amber-700">About</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white">
+        <div class="container mx-auto px-6 py-32 text-center">
+            <h1 class="font-playfair text-4xl md:text-6xl font-bold mb-4">Discover the Taste of Nawabs</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto">Explore the legendary culinary heritage of Lucknow, from succulent kebabs to fragrant biryanis.</p>
+            <a href="#restaurants" class="mt-8 inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition duration-300">Explore Restaurants</a>
+        </div>
+    </section>
+
+    <!-- Featured Restaurants Section -->
+    <section id="restaurants" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="font-playfair text-3xl md:text-4xl font-bold text-center mb-6">Famous Eateries</h2>
+            <!-- Filter Buttons -->
+            <div id="filter-container" class="flex justify-center flex-wrap gap-2 mb-12">
+                <button class="filter-btn active bg-amber-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="all">All</button>
+                <button class="filter-btn bg-white hover:bg-amber-100 text-amber-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="kebab">Kebabs</button>
+                <button class="filter-btn bg-white hover:bg-amber-100 text-amber-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="mughlai">Mughlai</button>
+                <button class="filter-btn bg-white hover:bg-amber-100 text-amber-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="biryani">Biryani</button>
+                <button class="filter-btn bg-white hover:bg-amber-100 text-amber-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="street-food">Street Food</button>
+                <button class="filter-btn bg-white hover:bg-amber-100 text-amber-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="dessert">Dessert</button>
+            </div>
+
+            <div id="restaurant-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Restaurant Cards with data attributes for filtering and modal -->
+                <div class="restaurant-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer" data-tags="kebab mughlai">
+                    <img src="https://placehold.co/600x400/7c2d12/FFFFFF?text=Tunday+Kababi" alt="Tunday Kababi" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold mb-2">Tunday Kababi</h3>
+                        <p class="text-gray-600 mb-4 card-description">An iconic spot famous for its melt-in-the-mouth Galouti Kebabs. A must-visit for any food lover.</p>
+                        <div class="hidden card-details">
+                            <p><strong>Signature Dish:</strong> Galouti Kebab, Mutton Biryani</p>
+                            <p><strong>Location:</strong> Aminabad & Chowk</p>
+                        </div>
+                        <span class="inline-block bg-amber-100 text-amber-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Kebabs</span>
+                        <span class="inline-block bg-red-100 text-red-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mughlai</span>
+                    </div>
+                </div>
+                <div class="restaurant-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer" data-tags="mughlai traditional">
+                    <img src="https://placehold.co/600x400/b45309/FFFFFF?text=Rahim's+Kulcha+Nahari" alt="Rahim's Kulcha Nahari" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold mb-2">Rahim's Kulcha Nahari</h3>
+                        <p class="text-gray-600 mb-4 card-description">Serving the legendary combination of Nahari (slow-cooked stew) and Kulcha (fluffy bread) for generations.</p>
+                         <div class="hidden card-details">
+                            <p><strong>Signature Dish:</strong> Kulcha Nahari, Paaye</p>
+                            <p><strong>Location:</strong> Chowk</p>
+                        </div>
+                        <span class="inline-block bg-green-100 text-green-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Traditional</span>
+                        <span class="inline-block bg-red-100 text-red-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mughlai</span>
+                    </div>
+                </div>
+                <div class="restaurant-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer" data-tags="dessert street-food">
+                    <img src="https://placehold.co/600x400/d97706/FFFFFF?text=Prakash+Kulfi" alt="Prakash Kulfi" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold mb-2">Prakash Kulfi</h3>
+                        <p class="text-gray-600 mb-4 card-description">Beat the heat with their delicious and refreshing Kulfi Falooda, a local favorite for dessert.</p>
+                        <div class="hidden card-details">
+                            <p><strong>Signature Dish:</strong> Kulfi Falooda</p>
+                            <p><strong>Location:</strong> Aminabad</p>
+                        </div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Dessert</span>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Street Food</span>
+                    </div>
+                </div>
+                <div class="restaurant-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer" data-tags="biryani mughlai">
+                    <img src="https://placehold.co/600x400/92400e/FFFFFF?text=Idris+Biryani" alt="Idris Biryani" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold mb-2">Idris Biryani</h3>
+                        <p class="text-gray-600 mb-4 card-description">Experience the authentic taste of Lucknowi Biryani, known for its fragrant rice and tender meat.</p>
+                        <div class="hidden card-details">
+                            <p><strong>Signature Dish:</strong> Mutton Biryani</p>
+                            <p><strong>Location:</strong> Chowk</p>
+                        </div>
+                        <span class="inline-block bg-red-100 text-red-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Biryani</span>
+                        <span class="inline-block bg-red-100 text-red-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mughlai</span>
+                    </div>
+                </div>
+                <div class="restaurant-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer" data-tags="breakfast street-food">
+                    <img src="https://placehold.co/600x400/a16207/FFFFFF?text=Sharma+Tea+Stall" alt="Sharma Tea Stall" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold mb-2">Sharma Tea Stall</h3>
+                        <p class="text-gray-600 mb-4 card-description">The perfect place for a cup of morning tea, served with their famous Bun Makkhan and Samosas.</p>
+                        <div class="hidden card-details">
+                            <p><strong>Signature Dish:</strong> Chai, Bun Makkhan, Gol Samosa</p>
+                            <p><strong>Location:</strong> Hazratganj</p>
+                        </div>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Breakfast</span>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Street Food</span>
+                    </div>
+                </div>
+                <div class="restaurant-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer" data-tags="chaat street-food">
+                    <img src="https://placehold.co/600x400/c2410c/FFFFFF?text=Royal+Cafe" alt="Royal Cafe" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-playfair text-xl font-bold mb-2">Royal Cafe</h3>
+                        <p class="text-gray-600 mb-4 card-description">Famous for its "Basket Chaat," a unique and delicious take on the popular Indian street food.</p>
+                        <div class="hidden card-details">
+                            <p><strong>Signature Dish:</strong> Basket Chaat</p>
+                            <p><strong>Location:</strong> Hazratganj</p>
+                        </div>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Chaat</span>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">Street Food</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Recipe Generator Section -->
+    <section id="ai-recipe" class="py-20 bg-amber-50">
+        <div class="container mx-auto px-6">
+            <h2 class="font-playfair text-3xl md:text-4xl font-bold text-center mb-4">✨ AI Recipe Generator</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Have some ingredients at home? Get a custom Lucknowi-style recipe generated by AI!</p>
+            <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <div class="mb-4">
+                    <label for="ingredients" class="block text-gray-700 font-bold mb-2">Enter your ingredients (comma-separated):</label>
+                    <input type="text" id="ingredients" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., chicken, yogurt, onion, ginger, garlic">
+                </div>
+                <button id="generate-recipe-btn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md transition duration-300">
+                    Generate Recipe
+                </button>
+                <div id="recipe-output" class="mt-8">
+                    <div id="loader-container" class="hidden justify-center items-center">
+                        <div id="loader"></div>
+                    </div>
+                    <div id="recipe-content" class="prose max-w-none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="font-playfair text-3xl md:text-4xl font-bold text-center mb-12">A Feast for the Eyes</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Gallery Images -->
+                <div class="grid gap-4">
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x700/f59e0b/FFFFFF?text=Kebabs" alt=""></div>
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x400/ef4444/FFFFFF?text=Biryani" alt=""></div>
+                </div>
+                <div class="grid gap-4">
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x400/22c55e/FFFFFF?text=Kulcha+Nahari" alt=""></div>
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x700/3b82f6/FFFFFF?text=Kulfi" alt=""></div>
+                </div>
+                <div class="grid gap-4">
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x700/8b5cf6/FFFFFF?text=Sheermal" alt=""></div>
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x400/ec4899/FFFFFF?text=Chaat" alt=""></div>
+                </div>
+                 <div class="grid gap-4">
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x400/f97316/FFFFFF?text=Makhan+Malai" alt=""></div>
+                    <div><img class="h-auto max-w-full rounded-lg" src="https://placehold.co/500x700/10b981/FFFFFF?text=Paan" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <img src="https://placehold.co/600x400/4b5563/FFFFFF?text=Awadhi+Cuisine" alt="About Lucknowi Cuisine" class="rounded-lg shadow-xl">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h2 class="font-playfair text-3xl md:text-4xl font-bold mb-4">The Legacy of Awadhi Cuisine</h2>
+                    <p class="text-gray-600 mb-4">
+                        Lucknowi cuisine, also known as Awadhi cuisine, is a culinary style with roots in the Mughal cooking techniques. It is known for its elaborate dishes like kebabs, kormas, biryanis, and breads like sheermal and roomali roti. The "dum pukht" or slow-fire cooking method is central to Awadhi cuisine, which allows the flavors of the spices to infuse deeply into the food.
+                    </p>
+                    <p class="text-gray-600">
+                        This website is a tribute to the rich culinary heritage of Lucknow, aiming to guide food enthusiasts to the most authentic and beloved eateries in the City of Nawabs.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-playfair text-xl mb-4">Lucknow Eats</p>
+            <p>&copy; 2025. A project to showcase the culinary delights of Lucknow.</p>
+            <p class="mt-2">Designed to be a part of a professional portfolio.</p>
+             <div class="mt-4">
+                <p>
+                    You can view this project live at: 
+                    <a href="https://lucknow-eats-demo.netlify.app" target="_blank" class="text-amber-400 hover:underline">lucknow-eats-demo.netlify.app</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Restaurant Modal -->
+    <div id="restaurant-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative animate-fade-in-up">
+            <button id="modal-close-btn" class="absolute -top-3 -right-3 bg-white rounded-full h-8 w-8 flex items-center justify-center text-2xl font-bold text-gray-700 hover:bg-gray-200">&times;</button>
+            <img id="modal-img" src="" alt="" class="w-full h-56 object-cover rounded-t-lg">
+            <div class="p-6">
+                <h3 id="modal-title" class="font-playfair text-2xl font-bold mb-2"></h3>
+                <p id="modal-description" class="text-gray-600 mb-4"></p>
+                <div id="modal-details" class="text-gray-700 space-y-1 mb-6"></div>
+                <a id="modal-visit-btn" href="https://www.google.com/maps/search/?api=1&query=Lucknow" target="_blank" class="inline-block w-full text-center bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md transition duration-300">
+                    Visit Restaurant
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Mobile menu toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Smooth scrolling for anchor links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // --- Restaurant Filtering Logic ---
+        const filterContainer = document.getElementById('filter-container');
+        const restaurantCards = document.querySelectorAll('.restaurant-card');
+        
+        filterContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-btn')) {
+                // Handle active button styling
+                filterContainer.querySelector('.active').classList.remove('active', 'bg-amber-600', 'text-white');
+                filterContainer.querySelector('.active').classList.add('bg-white', 'text-amber-800');
+                e.target.classList.add('active', 'bg-amber-600', 'text-white');
+                e.target.classList.remove('bg-white', 'text-amber-800');
+
+                const filter = e.target.dataset.filter;
+                
+                restaurantCards.forEach(card => {
+                    const tags = card.dataset.tags;
+                    if (filter === 'all' || tags.includes(filter)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // --- Restaurant Modal Logic ---
+        const modal = document.getElementById('restaurant-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalDetails = document.getElementById('modal-details');
+        const modalVisitBtn = document.getElementById('modal-visit-btn');
+        const closeModalBtn = document.getElementById('modal-close-btn');
+
+        restaurantCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Populate modal content from the clicked card
+                modalImg.src = card.querySelector('img').src;
+                modalTitle.textContent = card.querySelector('h3').textContent;
+                modalDescription.textContent = card.querySelector('.card-description').textContent;
+                modalDetails.innerHTML = card.querySelector('.card-details').innerHTML;
+                
+                // Update Google Maps link
+                const restaurantName = card.querySelector('h3').textContent;
+                const location = card.querySelector('.card-details p:last-child').textContent.split(': ')[1];
+                modalVisitBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurantName + ', ' + location + ', Lucknow')}`;
+
+                // Show the modal
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+        });
+
+        // Function to close the modal
+        const closeModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        closeModalBtn.addEventListener('click', closeModal);
+        // Also close modal if clicking outside the content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // --- Gemini API Integration ---
+        const generateBtn = document.getElementById('generate-recipe-btn');
+        const ingredientsInput = document.getElementById('ingredients');
+        const recipeOutput = document.getElementById('recipe-content');
+        const loader = document.getElementById('loader-container');
+
+        generateBtn.addEventListener('click', async () => {
+            const ingredients = ingredientsInput.value.trim();
+            if (!ingredients) {
+                recipeOutput.innerHTML = '<p class="text-red-500">Please enter some ingredients.</p>';
+                return;
+            }
+
+            loader.style.display = 'flex';
+            recipeOutput.innerHTML = '';
+
+            const prompt = `Create a detailed recipe in the style of Lucknowi (Awadhi) cuisine using the following ingredients: ${ingredients}. The recipe should have a creative name, a list of all ingredients (including the ones provided), and clear, step-by-step instructions. Format the output in clean HTML with an <h3> for the name, a <ul> for ingredients, and an <ol> for instructions.`;
+            
+            try {
+                // This is the fetch call to the Gemini API
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // API key will be automatically handled by the environment
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const recipeText = result.candidates[0].content.parts[0].text;
+                    recipeOutput.innerHTML = recipeText;
+                } else {
+                   throw new Error("No content received from the API.");
+                }
+
+            } catch (error) {
+                console.error('Error fetching recipe:', error);
+                recipeOutput.innerHTML = `<p class="text-red-500">Sorry, we couldn't generate a recipe at this time. Please try again later.</p>`;
+            } finally {
+                loader.style.display = 'none';
+            }
+        });
+
+    </script>
+</body>
+</html>
