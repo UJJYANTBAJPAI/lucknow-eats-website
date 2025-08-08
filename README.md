@@ -4,7 +4,7 @@ A fully responsive, interactive food guide website for the city of Lucknow, feat
 
 ---
 
-![Lucknow Eats Screenshot](![Lucknow Eats Screenshot](screenshot.png))
+![Lucknow Eats Screenshot](https://github.com/UJJYANTBAJPAI/lucknow-eats-website/blob/main/Screenshot%20(59).png)
 
 
 ## 🌟 About The Project
